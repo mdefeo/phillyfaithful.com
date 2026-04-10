@@ -1,0 +1,42 @@
+name: Deploy to Digital Ocean
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Droplet
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Digital Ocean Droplet via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DO_SSH_HOST }}
+          username: ${{ secrets.DO_SSH_USERNAME }}
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.DO_SSH_PORT || '22' }}
+          script: |
+            set -e
+
+            APP_DIR=/opt/phillyfaithful.com
+
+            echo "==> Pulling latest code..."
+            cd "$APP_DIR"
+            git pull origin main
+
+            echo "==> Rebuilding and restarting containers..."
+            docker compose pull --quiet
+            docker compose up -d --build --remove-orphans
+
+            echo "==> Pruning unused Docker images..."
+            docker image prune -f
+
+            echo "==> Deployment complete."
