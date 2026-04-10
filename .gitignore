@@ -1,0 +1,49 @@
+# Environment variables
+.env
+
+# WordPress uploads and generated files (keep directory, ignore contents)
+wp-content/uploads/*
+!wp-content/uploads/.gitkeep
+wp-content/upgrade/
+wp-content/cache/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+
+# WordPress core (managed by Docker image - not tracked in this repo)
+wp-admin/
+wp-includes/
+wp-login.php
+wp-signup.php
+wp-activate.php
+wp-blog-header.php
+wp-comments-post.php
+wp-cron.php
+wp-links-opml.php
+wp-load.php
+wp-mail.php
+wp-settings.php
+wp-trackback.php
+xmlrpc.php
+index.php
+license.txt
+readme.html
+wp-config.php
+
+# Docker volumes
+mysql-data/
+wordpress-data/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
